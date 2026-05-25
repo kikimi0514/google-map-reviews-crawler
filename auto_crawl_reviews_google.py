@@ -125,100 +125,83 @@ def click_review_tab(driver):
 
     return False
 def sort_reviews_by_newest(driver):
+
     time.sleep(5)
 
     print("準備切換最新排序")
-    print("目前網址：", driver.current_url)
-    print("目前標題：", driver.title)
 
     buttons = driver.find_elements(By.TAG_NAME, "button")
-    print("目前 button 數量：", len(buttons))
+
+    print("button 數量：", len(buttons))
 
     sort_button = None
 
     for btn in buttons:
+
         try:
-            text = btn.text.strip()
-            aria = btn.get_attribute("aria-label") or ""
-            title = btn.get_attribute("title") or ""
+
             text_content = driver.execute_script(
                 "return arguments[0].textContent;",
                 btn
-            ) or ""
+            )
 
-            all_text = text + " " + aria + " " + title + " " + text_content
+            text_content = str(text_content).strip()
 
-            if (
-                "排序" in all_text
-                or "Sort" in all_text
-                or "sort" in all_text
-            ):
+            print("button:", text_content)
+
+            if "排序" in text_content:
+
                 sort_button = btn
-                print("找到排序按鈕：", all_text)
+                print("找到排序按鈕")
                 break
 
-        except Exception as e:
-            print("檢查 button 失敗：", e)
+        except:
+            pass
 
     if sort_button is None:
+
         print("找不到排序按鈕")
         return False
-
-    driver.execute_script(
-        "arguments[0].scrollIntoView({block: 'center'});",
-        sort_button
-    )
-
-    time.sleep(1)
 
     driver.execute_script(
         "arguments[0].click();",
         sort_button
     )
 
-    print("已點擊排序按鈕")
+    print("已點擊排序")
+
     time.sleep(3)
 
-    # 點開下拉選單後，找「最新」
-    candidates = driver.find_elements(
+    # 找「最新」
+    newest_elements = driver.find_elements(
         By.XPATH,
-        "//*[@role='menuitemradio' or @role='menuitem' or @role='option' or @role='menuitemcheckbox']"
+        "//*[contains(text(), '最新')]"
     )
 
-    print("下拉選單候選數量：", len(candidates))
+    print("最新選項數量：", len(newest_elements))
 
-    for item in candidates:
+    for el in newest_elements:
+
         try:
-            text = item.text.strip()
-            aria = item.get_attribute("aria-label") or ""
-            text_content = driver.execute_script(
-                "return arguments[0].textContent;",
-                item
-            ) or ""
 
-            all_text = text + " " + aria + " " + text_content
+            print("最新候選：", el.text)
 
-            print("選單候選：", all_text)
+            driver.execute_script(
+                "arguments[0].click();",
+                el
+            )
 
-            if (
-                "最新" in all_text
-                or "Newest" in all_text
-                or "newest" in all_text
-            ):
-                driver.execute_script(
-                    "arguments[0].click();",
-                    item
-                )
+            print("已切換最新排序")
 
-                time.sleep(5)
+            time.sleep(5)
 
-                print("已切換成最新排序")
-                return True
+            return True
 
-        except Exception as e:
-            print("檢查選單失敗：", e)
+        except:
+            pass
 
-    print("找不到最新排序選項")
+    print("找不到最新選項")
+
     return False
 
 
