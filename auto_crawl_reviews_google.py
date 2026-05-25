@@ -124,29 +124,31 @@ def sort_reviews_by_newest(driver):
 
     print("準備切換最新排序")
 
-    # 先印出目前所有 button，方便 debug
-    buttons = driver.find_elements(By.TAG_NAME, "button")
-    print("目前 button 數量：", len(buttons))
+    # 先用 XPath 找包含「排序」文字的元素
+    sort_candidates = driver.find_elements(
+        By.XPATH,
+        "//*[contains(text(), '排序')]"
+    )
+
+    print("排序文字候選數量：", len(sort_candidates))
 
     sort_button = None
 
-    for btn in buttons:
+    for el in sort_candidates:
         try:
-            text = btn.text.strip()
-            aria = btn.get_attribute("aria-label") or ""
+            print("排序候選：", el.tag_name, el.text.strip())
 
-            if (
-                "排序" in text
-                or "排序" in aria
-                or "Sort" in text
-                or "Sort" in aria
-            ):
-                sort_button = btn
-                print("找到排序按鈕：", text, aria)
-                break
+            # 往上找真正可點的 button
+            btn = el.find_element(By.XPATH, "./ancestor::button[1]")
+            sort_button = btn
+            break
 
         except:
-            pass
+            try:
+                sort_button = el
+                break
+            except:
+                pass
 
     if sort_button is None:
         print("找不到排序按鈕")
@@ -166,33 +168,27 @@ def sort_reviews_by_newest(driver):
 
     time.sleep(3)
 
-    # 找最新選項
-    candidates = driver.find_elements(By.CSS_SELECTOR, "div[role='menuitemradio'], div[role='menuitem'], div[role='option']")
+    # 點完排序後，找「最新」選項
+    newest_candidates = driver.find_elements(
+        By.XPATH,
+        "//*[contains(text(), '最新')]"
+    )
 
-    print("排序選項數量：", len(candidates))
+    print("最新候選數量：", len(newest_candidates))
 
-    for item in candidates:
+    for item in newest_candidates:
         try:
-            text = item.text.strip()
-            aria = item.get_attribute("aria-label") or ""
+            print("最新候選：", item.tag_name, item.text.strip())
 
-            print("排序選項：", text, aria)
+            driver.execute_script(
+                "arguments[0].click();",
+                item
+            )
 
-            if (
-                "最新" in text
-                or "最新" in aria
-                or "Newest" in text
-                or "Newest" in aria
-            ):
-                driver.execute_script(
-                    "arguments[0].click();",
-                    item
-                )
+            time.sleep(5)
 
-                time.sleep(5)
-
-                print("已切換成最新排序")
-                return True
+            print("已切換成最新排序")
+            return True
 
         except:
             pass
