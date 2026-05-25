@@ -574,18 +574,6 @@ try:
             search_place(driver, PLACE)
 
             success = click_review_tab(driver)
-            
-            if not success:
-                print("找不到評論按鈕")
-                continue
-            
-            time.sleep(5)
-            
-            print("點評論後網址：", driver.current_url)
-            print("點評論後標題：", driver.title)
-
-            
-            success = click_review_tab(driver)
 
             if not success:
                 print("找不到評論按鈕")
