@@ -156,6 +156,43 @@ def click_review_tab(driver):
     print("找不到評論分頁")
     return False
 
+def click_all_reviews(driver):
+
+    time.sleep(3)
+
+    try:
+
+        all_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable(
+                (
+                    By.XPATH,
+                    "//*[text()='全部']"
+                )
+            )
+        )
+
+        print("找到全部按鈕")
+
+        driver.execute_script(
+            "arguments[0].click();",
+            all_button
+        )
+
+        time.sleep(5)
+
+        print("已點擊全部")
+
+        return True
+
+    except Exception as e:
+
+        print("找不到全部按鈕")
+        print(e)
+
+        return False
+
+
+
 def sort_reviews_by_newest(driver):
 
     time.sleep(5)
@@ -609,7 +646,9 @@ try:
             
             print("點評論後網址：", driver.current_url)
             print("點評論後標題：", driver.title)
+
             
+            click_all_reviews(driver)
             sorted_success = sort_reviews_by_newest(driver)
 
             if not sorted_success:
