@@ -95,30 +95,35 @@ def search_place(driver, keyword):
 
 
 def click_review_tab(driver):
-    time.sleep(3)
+    time.sleep(5)
 
-    buttons = driver.find_elements(By.TAG_NAME, "button")
+    candidates = driver.find_elements(
+        By.XPATH,
+        "//*[contains(text(), '評論') or contains(@aria-label, '評論')]"
+    )
 
-    for btn in buttons:
+    print("評論候選數量：", len(candidates))
+
+    for el in candidates:
         try:
-            text = btn.text.strip()
-            aria = btn.get_attribute("aria-label") or ""
+            text = el.text.strip()
+            aria = el.get_attribute("aria-label") or ""
 
-            if text == "評論" or "評論" in aria:
+            print("評論候選：", el.tag_name, text, aria)
 
-                driver.execute_script("""
-                    arguments[0].click();
-                """, btn)
+            driver.execute_script(
+                "arguments[0].click();",
+                el
+            )
 
-                time.sleep(5)
-
-                return True
+            time.sleep(5)
+            print("已點擊評論")
+            return True
 
         except:
             pass
 
     return False
-
 def sort_reviews_by_newest(driver):
     time.sleep(5)
 
@@ -593,11 +598,16 @@ try:
             search_place(driver, PLACE)
 
             success = click_review_tab(driver)
-
+            
             if not success:
                 print("找不到評論按鈕")
                 continue
-
+            
+            time.sleep(5)
+            
+            print("點評論後網址：", driver.current_url)
+            print("點評論後標題：", driver.title)
+            
             sorted_success = sort_reviews_by_newest(driver)
 
             if not sorted_success:
