@@ -122,36 +122,75 @@ def click_review_tab(driver):
 def sort_reviews_by_newest(driver):
     time.sleep(3)
 
+    print("準備切換最新排序")
+
+    # 先印出目前所有 button，方便 debug
     buttons = driver.find_elements(By.TAG_NAME, "button")
+    print("目前 button 數量：", len(buttons))
+
+    sort_button = None
 
     for btn in buttons:
         try:
             text = btn.text.strip()
             aria = btn.get_attribute("aria-label") or ""
 
-            if "排序" in text or "排序" in aria:
-                driver.execute_script(
-                    "arguments[0].click();",
-                    btn
-                )
-                time.sleep(2)
+            if (
+                "排序" in text
+                or "排序" in aria
+                or "Sort" in text
+                or "Sort" in aria
+            ):
+                sort_button = btn
+                print("找到排序按鈕：", text, aria)
                 break
 
         except:
             pass
 
-    menu_items = driver.find_elements(By.CSS_SELECTOR, "div[role='menuitemradio']")
+    if sort_button is None:
+        print("找不到排序按鈕")
+        return False
 
-    for item in menu_items:
+    driver.execute_script(
+        "arguments[0].scrollIntoView(true);",
+        sort_button
+    )
+
+    time.sleep(1)
+
+    driver.execute_script(
+        "arguments[0].click();",
+        sort_button
+    )
+
+    time.sleep(3)
+
+    # 找最新選項
+    candidates = driver.find_elements(By.CSS_SELECTOR, "div[role='menuitemradio'], div[role='menuitem'], div[role='option']")
+
+    print("排序選項數量：", len(candidates))
+
+    for item in candidates:
         try:
             text = item.text.strip()
+            aria = item.get_attribute("aria-label") or ""
 
-            if "最新" in text:
+            print("排序選項：", text, aria)
+
+            if (
+                "最新" in text
+                or "最新" in aria
+                or "Newest" in text
+                or "Newest" in aria
+            ):
                 driver.execute_script(
                     "arguments[0].click();",
                     item
                 )
+
                 time.sleep(5)
+
                 print("已切換成最新排序")
                 return True
 
@@ -543,8 +582,11 @@ try:
                 print("找不到評論按鈕")
                 continue
             
-            sort_reviews_by_newest(driver)
+        sorted_success = sort_reviews_by_newest(driver)
 
+        if not sorted_success:
+            print("沒有成功切換最新排序，跳過這間")
+            continue
             seen_reviews = crawl_reviews(
                 driver=driver,
                 ws=ws,
