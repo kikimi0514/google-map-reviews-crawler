@@ -581,12 +581,13 @@ try:
             if not success:
                 print("找不到評論按鈕")
                 continue
-            
-        sorted_success = sort_reviews_by_newest(driver)
 
-        if not sorted_success:
-            print("沒有成功切換最新排序，跳過這間")
-            continue
+            sorted_success = sort_reviews_by_newest(driver)
+
+            if not sorted_success:
+                print("沒有成功切換最新排序，跳過這間")
+                continue
+
             seen_reviews = crawl_reviews(
                 driver=driver,
                 ws=ws,
