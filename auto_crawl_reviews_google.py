@@ -585,12 +585,15 @@ try:
             print("點評論後標題：", driver.title)
 
             
-            click_all_reviews(driver)
+            all_success = click_all_reviews(driver)
+
             sorted_success = sort_reviews_by_newest(driver)
 
-            if not sorted_success:
-                print("沒有成功切換最新排序，跳過這間")
+            if not all_success:
+                print("沒有成功點擊全部，跳過這間")
                 continue
+
+            sorted_success = sort_reviews_by_newest(driver)
 
             seen_reviews = crawl_reviews(
                 driver=driver,
