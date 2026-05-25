@@ -37,42 +37,26 @@ SHEET_IDS = {
 
 def make_driver():
     options = Options()
-    options.add_argument("--start-maximized")
     options.add_argument("--headless=new")
+    options.add_argument("--window-size=1920,1080")
     options.add_argument("--lang=zh-TW")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-blink-features=AutomationControlled")
 
     driver = webdriver.Chrome(options=options)
     return driver
 
+from urllib.parse import quote
+
 
 def search_place(driver, keyword):
-    driver.get("https://www.google.com/maps")
+    url = "https://www.google.com/maps/search/" + quote(keyword) + "?hl=zh-TW&gl=tw"
+    driver.get(url)
 
-    wait = WebDriverWait(driver, 30)
+    time.sleep(10)
 
-    # 搜尋框
-    search_box = wait.until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, "input"))
-    )
-
-    search_box.click()
-    time.sleep(1)
-
-    search_box.clear()
-    search_box.send_keys(keyword)
-
-    time.sleep(1)
-
-    search_box.send_keys(Keys.ENTER)
-
-    print("已送出搜尋")
-
-    time.sleep(8)
-
-    # 抓搜尋結果
     results = driver.find_elements(By.CSS_SELECTOR, "a.hfpxzc")
-
     print("搜尋結果數量：", len(results))
 
     clicked = False
@@ -80,37 +64,34 @@ def search_place(driver, keyword):
     for r in results:
         try:
             aria = r.get_attribute("aria-label") or ""
-
             print("找到結果：", aria)
 
-            # 只點完全相同名稱
             if aria.strip() == PLACE:
-
                 print("準備點擊：", aria)
 
-                driver.execute_script("""
-                    arguments[0].scrollIntoView(true);
-                """, r)
+                driver.execute_script(
+                    "arguments[0].scrollIntoView(true);",
+                    r
+                )
 
                 time.sleep(1)
 
-                driver.execute_script("""
-                    arguments[0].click();
-                """, r)
+                driver.execute_script(
+                    "arguments[0].click();",
+                    r
+                )
 
                 clicked = True
-
                 print("已點擊")
-
                 time.sleep(10)
-
                 break
 
         except Exception as e:
             print(e)
 
     if not clicked:
-        print("沒有找到完全符合的搜尋結果")
+        print("沒有搜尋結果清單，可能已直接進入場館頁")
+        time.sleep(5)
 
 
 def click_review_tab(driver):
