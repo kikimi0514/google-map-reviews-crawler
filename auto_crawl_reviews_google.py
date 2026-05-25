@@ -156,6 +156,89 @@ def click_review_tab(driver):
     print("找不到評論分頁")
     return False
 
+def sort_reviews_by_newest(driver):
+
+    time.sleep(5)
+
+    print("準備切換最新排序")
+
+    buttons = driver.find_elements(
+        By.CSS_SELECTOR,
+        "button, div[role='button']"
+    )
+
+    print("可點擊元素數量：", len(buttons))
+
+    sort_button = None
+
+    for btn in buttons:
+
+        try:
+
+            text_content = driver.execute_script(
+                "return arguments[0].textContent;",
+                btn
+            )
+
+            text_content = str(text_content).strip()
+
+            print("元素:", text_content)
+
+            if "排序" in text_content:
+
+                sort_button = btn
+                print("找到排序按鈕")
+                break
+
+        except:
+            pass
+
+    if sort_button is None:
+
+        print("找不到排序按鈕")
+        return False
+
+    driver.execute_script(
+        "arguments[0].click();",
+        sort_button
+    )
+
+    print("已點擊排序")
+
+    time.sleep(3)
+
+    newest_elements = driver.find_elements(
+        By.XPATH,
+        "//*[contains(text(), '最新')]"
+    )
+
+    print("最新選項數量：", len(newest_elements))
+
+    for el in newest_elements:
+
+        try:
+
+            print("最新候選：", el.text)
+
+            driver.execute_script(
+                "arguments[0].click();",
+                el
+            )
+
+            print("已切換最新排序")
+
+            time.sleep(5)
+
+            return True
+
+        except:
+            pass
+
+    print("找不到最新選項")
+
+    return False
+
+
 
 def click_more_buttons(driver):
     review_blocks = driver.find_elements(By.CSS_SELECTOR, "div.jftiEf")
