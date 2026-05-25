@@ -6,6 +6,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 import time
+import os
 from bs4 import BeautifulSoup
 
 from selenium import webdriver
