@@ -97,111 +97,63 @@ def search_place(driver, keyword):
 def click_review_tab(driver):
     time.sleep(5)
 
+    print("準備點擊評論分頁")
+
+    # 優先找 role=tab 的評論分頁
+    tabs = driver.find_elements(By.CSS_SELECTOR, "button[role='tab']")
+
+    print("tab 數量：", len(tabs))
+
+    for tab in tabs:
+        try:
+            text = driver.execute_script(
+                "return arguments[0].textContent;",
+                tab
+            ) or ""
+
+            text = text.strip()
+
+            print("tab:", text)
+
+            if text == "評論":
+                driver.execute_script(
+                    "arguments[0].click();",
+                    tab
+                )
+
+                time.sleep(5)
+
+                print("已點擊評論分頁")
+                return True
+
+        except:
+            pass
+
+    print("找不到 role=tab 的評論分頁，改用 XPath")
+
     candidates = driver.find_elements(
         By.XPATH,
-        "//*[contains(text(), '評論') or contains(@aria-label, '評論')]"
+        "//button[.//div[text()='評論'] or .//span[text()='評論']]"
     )
 
-    print("評論候選數量：", len(candidates))
+    print("評論 tab 候選數量：", len(candidates))
 
     for el in candidates:
         try:
-            text = el.text.strip()
-            aria = el.get_attribute("aria-label") or ""
-
-            print("評論候選：", el.tag_name, text, aria)
-
             driver.execute_script(
                 "arguments[0].click();",
                 el
             )
 
             time.sleep(5)
-            print("已點擊評論")
+
+            print("已點擊評論分頁")
             return True
 
         except:
             pass
 
-    return False
-def sort_reviews_by_newest(driver):
-
-    time.sleep(5)
-
-    print("準備切換最新排序")
-
-    buttons = driver.find_elements(By.TAG_NAME, "button")
-
-    print("button 數量：", len(buttons))
-
-    sort_button = None
-
-    for btn in buttons:
-
-        try:
-
-            text_content = driver.execute_script(
-                "return arguments[0].textContent;",
-                btn
-            )
-
-            text_content = str(text_content).strip()
-
-            print("button:", text_content)
-
-            if "排序" in text_content:
-
-                sort_button = btn
-                print("找到排序按鈕")
-                break
-
-        except:
-            pass
-
-    if sort_button is None:
-
-        print("找不到排序按鈕")
-        return False
-
-    driver.execute_script(
-        "arguments[0].click();",
-        sort_button
-    )
-
-    print("已點擊排序")
-
-    time.sleep(3)
-
-    # 找「最新」
-    newest_elements = driver.find_elements(
-        By.XPATH,
-        "//*[contains(text(), '最新')]"
-    )
-
-    print("最新選項數量：", len(newest_elements))
-
-    for el in newest_elements:
-
-        try:
-
-            print("最新候選：", el.text)
-
-            driver.execute_script(
-                "arguments[0].click();",
-                el
-            )
-
-            print("已切換最新排序")
-
-            time.sleep(5)
-
-            return True
-
-        except:
-            pass
-
-    print("找不到最新選項")
-
+    print("找不到評論分頁")
     return False
 
 
