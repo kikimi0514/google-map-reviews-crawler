@@ -162,81 +162,65 @@ def sort_reviews_by_newest(driver):
 
     print("準備切換最新排序")
 
-    buttons = driver.find_elements(
-        By.CSS_SELECTOR,
-        "button, div[role='button']"
-    )
+    try:
 
-    print("可點擊元素數量：", len(buttons))
-
-    sort_button = None
-
-    for btn in buttons:
-
-        try:
-
-            text_content = driver.execute_script(
-                "return arguments[0].textContent;",
-                btn
+        sort_button = WebDriverWait(driver, 15).until(
+            EC.element_to_be_clickable(
+                (
+                    By.XPATH,
+                    "//*[contains(text(), '排序')]"
+                )
             )
+        )
 
-            text_content = str(text_content).strip()
+        print("找到排序按鈕")
 
-            print("元素:", text_content)
+        driver.execute_script(
+            "arguments[0].click();",
+            sort_button
+        )
 
-            if "排序" in text_content:
+        print("已點擊排序")
 
-                sort_button = btn
-                print("找到排序按鈕")
-                break
+        time.sleep(3)
 
-        except:
-            pass
-
-    if sort_button is None:
+    except Exception as e:
 
         print("找不到排序按鈕")
+        print(e)
+
         return False
 
-    driver.execute_script(
-        "arguments[0].click();",
-        sort_button
-    )
+    try:
 
-    print("已點擊排序")
-
-    time.sleep(3)
-
-    newest_elements = driver.find_elements(
-        By.XPATH,
-        "//*[contains(text(), '最新')]"
-    )
-
-    print("最新選項數量：", len(newest_elements))
-
-    for el in newest_elements:
-
-        try:
-
-            print("最新候選：", el.text)
-
-            driver.execute_script(
-                "arguments[0].click();",
-                el
+        newest_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable(
+                (
+                    By.XPATH,
+                    "//*[contains(text(), '最新')]"
+                )
             )
+        )
 
-            print("已切換最新排序")
+        print("找到最新選項")
 
-            time.sleep(5)
+        driver.execute_script(
+            "arguments[0].click();",
+            newest_button
+        )
 
-            return True
+        print("已切換成最新排序")
 
-        except:
-            pass
+        time.sleep(5)
 
-    print("找不到最新選項")
+        return True
 
-    return False
+    except Exception as e:
+
+        print("找不到最新選項")
+        print(e)
+
+        return False
 
 
 
