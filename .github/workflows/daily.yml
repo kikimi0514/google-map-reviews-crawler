@@ -31,4 +31,4 @@ jobs:
       - name: Run crawler
         env:
           GSHEET_CREDENTIALS: ${{ secrets.GSHEET_CREDENTIALS }}
-        run: python auto_crawl_reviews_google.py
+        run: python auto_crawl_reviews_playwright.py
