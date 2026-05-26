@@ -24,11 +24,9 @@ GSHEET_CREDS = os.environ["GSHEET_CREDENTIALS"]
 
 
 def search_place(page, place):
-    review_url = page.url.split("?")[0] + "/reviews?hl=zh-TW&gl=tw"
-    print("評論網址：", review_url)
-    
+
     page.goto(
-        review_url,
+        f"https://www.google.com/maps/search/{place}?hl=zh-TW&gl=tw",
         wait_until="domcontentloaded",
         timeout=60000
     )
@@ -41,20 +39,26 @@ def search_place(page, place):
     print("搜尋結果數量：", count)
 
     for i in range(count):
+
         result = results.nth(i)
         aria = result.get_attribute("aria-label") or ""
 
         print("找到結果：", aria)
 
         if aria.strip() == place:
+
             result.click()
+
             print("已點擊完全符合結果：", aria)
+
             time.sleep(10)
+
             return True
 
     print("沒有找到完全符合結果，可能已直接進入場館頁")
-    return True
 
+    return True
+    
 def get_gsheet_client():
     creds = Credentials.from_service_account_info(
         json.loads(GSHEET_CREDS),
@@ -201,6 +205,17 @@ def main():
             seen = load_seen_reviews_from_sheet(ws)
 
             search_place(page, place)
+
+            review_url = page.url.split("?")[0] + "/reviews?hl=zh-TW&gl=tw"
+            print("評論網址：", review_url)
+
+            page.goto(
+                review_url,
+                wait_until="domcontentloaded",
+                timeout=60000
+            )
+            
+            time.sleep(10)
 
             sort_button = page.locator("button:has-text('排序')").first
             sort_button.wait_for(timeout=30000)
