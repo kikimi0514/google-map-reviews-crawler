@@ -72,10 +72,31 @@ def main():
         print("進評論網址後標題：", page.title())
         print("進評論網址後網址：", page.url)
 
-        all_text = page.locator("button").all_inner_texts()
-        print(all_text)
-
-        print("測試結束")
+        sort_button = page.locator(
+            "button:has-text('排序')"
+        ).first
+        
+        sort_button.click()
+        
+        print("已點擊排序")
+        
+        time.sleep(3)
+        
+        menu_text = page.locator(
+            "div[role='menuitemradio']"
+        ).all_inner_texts()
+        
+        print("排序選單：", menu_text)
+        
+        newest = page.locator(
+            "div[role='menuitemradio']:has-text('最新')"
+        ).first
+        
+        newest.click()
+        
+        print("已點擊最新")
+        
+        time.sleep(5)
 
     finally:
         browser.close()
