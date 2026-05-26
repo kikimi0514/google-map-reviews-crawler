@@ -32,10 +32,15 @@ def main():
         print("目前標題：", page.title())
         print("目前網址：", page.url)
 
+        # 找評論 tab
+        review = page.locator("text=評論").first
+
+        review.click()
+
+        print("已點擊評論")
+
+        time.sleep(10)
+
     finally:
         browser.close()
         playwright.stop()
-
-
-if __name__ == "__main__":
-    main()
