@@ -84,7 +84,6 @@ def review_key(review):
     return (
         review["name"],
         review["rating"],
-        review["time"],
         review["review"]
     )
 
