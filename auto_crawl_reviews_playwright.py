@@ -41,7 +41,7 @@ def main():
 
         time.sleep(5)
         view_all = page.locator("text=查看全部").first
-        view_all.click()
+        view_all.click(force=True)
         print("已點擊查看全部")
         time.sleep(5)
         
