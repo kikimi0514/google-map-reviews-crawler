@@ -41,8 +41,17 @@ def main():
 
         time.sleep(5)
         view_all_button = page.locator("button:has-text('查看全部')").first
-        view_all_button.click(force=True)
-        print("已點擊查看全部")
+
+        box = view_all_button.bounding_box()
+        print("查看全部 bounding box：", box)
+
+        if box:
+            page.mouse.click(
+                box["x"] + box["width"] / 2,
+                box["y"] + box["height"] / 2
+            )
+
+        print("已用滑鼠座標點擊查看全部")
         time.sleep(5)
         print("查看全部後網址：", page.url)
         print("查看全部後標題：", page.title())
