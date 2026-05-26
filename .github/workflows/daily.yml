@@ -2,7 +2,7 @@ name: Daily Google Maps Reviews Crawl
 
 on:
   schedule:
-    - cron: "0 1 * * *"
+    - cron: "45 09 * * *"
   workflow_dispatch:
 
 jobs:
