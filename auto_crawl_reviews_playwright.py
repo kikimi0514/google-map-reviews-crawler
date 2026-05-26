@@ -44,6 +44,8 @@ def main():
         view_all.click(force=True)
         print("已點擊查看全部")
         time.sleep(5)
+        print("查看全部後網址：", page.url)
+        print("查看全部後標題：", page.title())
         
         all_text = page.locator("button").all_inner_texts()
 
