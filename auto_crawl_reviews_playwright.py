@@ -42,7 +42,6 @@ def main():
         time.sleep(5)
         view_all_button = page.locator("button:has-text('查看全部')").first
         view_all_button.click(force=True)
-        view_all.click(force=True)
         print("已點擊查看全部")
         time.sleep(5)
         print("查看全部後網址：", page.url)
@@ -55,9 +54,7 @@ def main():
         print("已印出所有 button")
         time.sleep(30)
 
-        print("已點擊排序")
-
-        time.sleep(5)
+        print("測試結束")
 
 
     finally:
