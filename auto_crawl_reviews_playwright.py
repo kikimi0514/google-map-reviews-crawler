@@ -6,16 +6,41 @@ def make_page():
     playwright = sync_playwright().start()
 
     browser = playwright.chromium.launch(
-        headless=True
+        headless=True,
+        args=[
+            "--no-sandbox",
+            "--disable-dev-shm-usage",
+            "--enable-webgl",
+            "--use-gl=swiftshader",
+            "--disable-blink-features=AutomationControlled",
+        ]
     )
 
-    page = browser.new_page(
+    context = browser.new_context(
         locale="zh-TW",
-        viewport={"width": 1920, "height": 1080}
+        timezone_id="Asia/Taipei",
+        viewport={"width": 1920, "height": 1080},
+        permissions=["geolocation"],
+        geolocation={
+            "latitude": 25.0330,
+            "longitude": 121.5659
+        },
+        user_agent=(
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/148.0.0.0 Safari/537.36"
+        )
     )
+
+    context.add_init_script("""
+        Object.defineProperty(navigator, 'webdriver', {
+            get: () => undefined
+        });
+    """)
+
+    page = context.new_page()
 
     return playwright, browser, page
-
 
 def main():
     playwright, browser, page = make_page()
