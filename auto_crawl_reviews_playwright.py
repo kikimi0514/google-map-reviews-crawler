@@ -2,6 +2,8 @@ import time
 import os
 import json
 import gspread
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from google.oauth2.service_account import Credentials
 from playwright.sync_api import sync_playwright
 
@@ -126,8 +128,8 @@ def is_within_one_day(review_time):
 
 def append_new_reviews_to_sheet(ws, place, reviews, seen):
     new_rows = []
-    crawl_time = time.strftime("%Y-%m-%d %H:%M:%S")
-
+    crawl_time = datetime.now(ZoneInfo("Asia/Taipei")).strftime("%Y-%m-%d %H:%M:%S")
+    
     for r in reviews:
         key = review_key(r)
 
