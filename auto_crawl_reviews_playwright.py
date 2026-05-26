@@ -24,8 +24,11 @@ GSHEET_CREDS = os.environ["GSHEET_CREDENTIALS"]
 
 
 def search_place(page, place):
+    review_url = page.url.split("?")[0] + "/reviews?hl=zh-TW&gl=tw"
+    print("評論網址：", review_url)
+    
     page.goto(
-        f"https://www.google.com/maps/search/{place}?hl=zh-TW&gl=tw",
+        review_url,
         wait_until="domcontentloaded",
         timeout=60000
     )
