@@ -40,7 +40,8 @@ def main():
         print("已點擊評論")
 
         time.sleep(5)
-        view_all = page.locator("text=查看全部").first
+        view_all_button = page.locator("button:has-text('查看全部')").first
+        view_all_button.click(force=True)
         view_all.click(force=True)
         print("已點擊查看全部")
         time.sleep(5)
