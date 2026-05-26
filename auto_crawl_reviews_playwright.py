@@ -39,7 +39,16 @@ def main():
 
         print("已點擊評論")
 
-        time.sleep(10)
+        time.sleep(5)
+        
+        sort_button = page.locator("text=排序").first
+
+        sort_button.click()
+
+        print("已點擊排序")
+
+        time.sleep(5)
+
 
     finally:
         browser.close()
