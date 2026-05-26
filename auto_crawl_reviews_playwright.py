@@ -40,11 +40,16 @@ def main():
         print("已點擊評論")
 
         time.sleep(5)
+        view_all = page.locator("text=查看全部").first
+        view_all.click()
+        print("已點擊查看全部")
+        time.sleep(5)
         
         all_text = page.locator("button").all_inner_texts()
 
         print(all_text)
-
+        
+        print("已印出所有 button")
         time.sleep(30)
 
         print("已點擊排序")
