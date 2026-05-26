@@ -98,6 +98,34 @@ def main():
         
         time.sleep(5)
 
+        reviews = page.locator("div.jftiEf")
+
+        print("評論數量：", reviews.count())
+        
+        for i in range(min(5, reviews.count())):
+        
+            review = reviews.nth(i)
+        
+            try:
+                name = review.locator(".d4r55").inner_text()
+            except:
+                name = ""
+        
+            try:
+                content = review.locator(".wiI7pd").inner_text()
+            except:
+                content = ""
+        
+            try:
+                time_text = review.locator(".rsqaWe").inner_text()
+            except:
+                time_text = ""
+        
+            print("=" * 40)
+            print("作者：", name)
+            print("時間：", time_text)
+            print("評論：", content)
+
     finally:
         browser.close()
         playwright.stop()
