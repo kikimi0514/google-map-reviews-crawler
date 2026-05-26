@@ -41,9 +41,11 @@ def main():
 
         time.sleep(5)
         
-        sort_button = page.locator("text=排序").first
+        all_text = page.locator("button").all_inner_texts()
 
-        sort_button.click()
+        print(all_text)
+
+        time.sleep(30)
 
         print("已點擊排序")
 
