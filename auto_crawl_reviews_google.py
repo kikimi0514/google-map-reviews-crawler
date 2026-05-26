@@ -579,22 +579,13 @@ try:
                 print("找不到評論按鈕")
                 continue
             
-            time.sleep(5)
-            
-            print("點評論後網址：", driver.current_url)
-            print("點評論後標題：", driver.title)
-            
-            all_success = click_all_reviews(driver)
-            
-            if not all_success:
-                print("沒有成功點擊全部，跳過這間")
-                continue
             
             sorted_success = sort_reviews_by_newest(driver)
             
             if not sorted_success:
                 print("沒有成功切換最新排序，跳過這間")
                 continue
+            
             
             seen_reviews = crawl_reviews(
                 driver=driver,
