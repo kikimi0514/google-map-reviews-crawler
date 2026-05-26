@@ -32,39 +32,25 @@ def main():
         print("目前標題：", page.title())
         print("目前網址：", page.url)
 
-        # 找評論 tab
-        review = page.locator("text=評論").first
+        review_url = page.url.split("?")[0] + "/reviews?hl=zh-TW&gl=tw"
 
-        review.click()
+        print("評論網址：", review_url)
 
-        print("已點擊評論")
+        page.goto(
+            review_url,
+            wait_until="domcontentloaded",
+            timeout=60000
+        )
 
-        time.sleep(5)
-        view_all_button = page.locator("button:has-text('查看全部')").first
+        time.sleep(10)
 
-        box = view_all_button.bounding_box()
-        print("查看全部 bounding box：", box)
+        print("進評論網址後標題：", page.title())
+        print("進評論網址後網址：", page.url)
 
-        if box:
-            page.mouse.click(
-                box["x"] + box["width"] / 2,
-                box["y"] + box["height"] / 2
-            )
-
-        print("已用滑鼠座標點擊查看全部")
-        time.sleep(5)
-        print("查看全部後網址：", page.url)
-        print("查看全部後標題：", page.title())
-        
         all_text = page.locator("button").all_inner_texts()
-
         print(all_text)
-        
-        print("已印出所有 button")
-        time.sleep(30)
 
         print("測試結束")
-
 
     finally:
         browser.close()
