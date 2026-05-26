@@ -8,6 +8,15 @@ from playwright.sync_api import sync_playwright
 PLACES = {
     "北投運動中心": "1Ywfz9KlXmiRlKWqOETWJJ-6dVs_MnbMR2L_W--jCwsw",
     "士林運動中心": "1Dwr4cNIaEWHkXj-yDTP3wb5_M63lgCqNTV5Wfd3CyyE",
+    "臺北市大同運動中心": "1w2yeAKHoFvGoFUaVIusBc7FFMGQ3NGlbxbKabeaecXo",
+    "臺北市大安運動中心": "1f3c-sHp_uvHDmye4qMKHl3Q6oOb78NAn6QqSlfKFLto",
+    "臺北市中山運動中心": "1UA80sFh0Ro6eSythWg5Kr68ACGf7fY02HWPHRXtzLnM",
+    "臺北市內湖運動中心 Taipei Neihu Sports Center": "1dr_htEoWL_vv1S7sPzPBVJqTM_4nfI5Vo7XVeXu5Hg4",
+    "臺北市文山運動中心": "1v0rVk7qcMThs4wt-zPu5uRz8Zx4WRG_d5a_4F2mJYa8",
+    "臺北市松山運動中心": "1CF2FTTCf3MXObbMjSgXt1pLYVkGgl52O8lMBLfiSiwU",
+    "臺北市信義運動中心 Taipei Xinyi Sports Center": "1KcAdgF92x-TM7YvUmKdt5QOZeFmZQHR0E9JGnyp2-Bc",
+    "臺北萬華運動中心": "1UJFuQw6g7wAINWYDmtp6Uu4uCwZjWFMAOFu7xiUJtSk",
+    "舞動陽光-中正運動中心": "16ahK9TfRC-l-CNk-3WO3MIJaxKZ1Jk3EnIxrdCLoM_0",
 }
 
 TZ = "Asia/Taipei"
