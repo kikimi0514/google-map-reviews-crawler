@@ -244,6 +244,14 @@ def main():
                 block = reviews_locator.nth(i)
 
                 try:
+                    more_button = block.locator("button:has-text('全文')").first
+                    if more_button.count() > 0:
+                        more_button.click()
+                        time.sleep(0.2)
+                except:
+                    pass
+
+                try:
                     name = block.locator(".d4r55").inner_text()
                 except:
                     name = ""
