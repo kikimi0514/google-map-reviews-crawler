@@ -244,11 +244,11 @@ def main():
                 block = reviews_locator.nth(i)
 
                 try:
-                    more_buttons = block.locator("button:has-text('更多')")
+                    more_buttons = block.locator("button:has-text('更多'), span:has-text('更多')")
 
                     if more_buttons.count() > 0:
                         more_buttons.first.click()
-                        time.sleep(0.3)
+                        time.sleep(0.5)
                 except:
                     pass
 
@@ -268,7 +268,7 @@ def main():
                     review_time = ""
 
                 try:
-                    review_parts = block.locator(".wiI7pd")
+                    review_parts = block.locator("div.MyEned span.wiI7pd")
                     if review_parts.count() > 0:
                         review_text = review_parts.first.inner_text()
                     else:
