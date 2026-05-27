@@ -246,7 +246,7 @@ def main():
                 try:
                     more_buttons = block.locator("button:has-text('更多')")
 
-                    if more_button.count() > 0:
+                    if more_buttons.count() > 0:
                         more_buttons.first.click()
                         time.sleep(0.3)
                 except:
@@ -273,6 +273,10 @@ def main():
                         review_text = review_parts.first.inner_text()
                     else:
                         review_text = ""
+                        
+                    for marker in ["業主回應", "店家回覆", "Response from the owner"]:
+                        if marker in review_text:
+                            review_text = review_text.split(marker)[0].strip()
                 except:
                     review_text = ""
 
