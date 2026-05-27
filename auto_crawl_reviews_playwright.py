@@ -247,7 +247,7 @@ def main():
                     more_buttons = block.locator("button:has-text('更多')")
 
                     if more_button.count() > 0:
-                        more_button.click()
+                        more_buttons.first.click()
                         time.sleep(0.3)
                 except:
                     pass
@@ -271,6 +271,8 @@ def main():
                     review_parts = block.locator(".wiI7pd")
                     if review_parts.count() > 0:
                         review_text = review_parts.first.inner_text()
+                    else:
+                        review_text = ""
                 except:
                     review_text = ""
 
