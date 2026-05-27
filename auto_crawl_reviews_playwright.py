@@ -267,7 +267,9 @@ def main():
                     review_time = ""
 
                 try:
-                    review_text = block.locator(".wiI7pd").inner_text()
+                    review_parts = block.locator(".wiI7pd")
+                    if review_parts.count() > 0:
+                        review_text = review_parts.first.inner_text()
                 except:
                     review_text = ""
 
