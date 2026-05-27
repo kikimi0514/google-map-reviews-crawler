@@ -244,10 +244,11 @@ def main():
                 block = reviews_locator.nth(i)
 
                 try:
-                    more_button = block.locator("button:has-text('全文')").first
+                    more_buttons = block.locator("button:has-text('更多')")
+
                     if more_button.count() > 0:
                         more_button.click()
-                        time.sleep(0.2)
+                        time.sleep(0.3)
                 except:
                     pass
 
